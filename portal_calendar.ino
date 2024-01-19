@@ -236,6 +236,10 @@ void setup()
     time_t t;
     time(&t);
 
+    /* 屏幕 pwr 通电 */
+    pinMode(13, OUTPUT);
+    digitalWrite(13, HIGH);
+
     #if CORE_DEBUG_LEVEL > 0
     Serial.begin(115200);
     #endif

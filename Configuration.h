@@ -58,7 +58,7 @@ public:
 
     inline bool isOnUsbPower()
     {
-        return digitalRead(PD_PIN) == PD_PIN_STATE;
+        return true; // digitalRead(PD_PIN) == PD_PIN_STATE;
     }
 
 private:

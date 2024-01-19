@@ -477,14 +477,11 @@ void ConfigurationClass::startConfigServer()
     DefaultHeaders::Instance().addHeader("Access-Control-Allow-Methods", "*");
     #endif // DEV_WEBSERVER
 
-    log_i("Starting webserver");
-    _httpServer->begin();
-
     #ifdef DEV_WEBSERVER
     log_i("DEV Webserver ready at %s", WiFi.localIP().toString().c_str());
     Display.showDevWebserverScreen(WiFi.SSID(), WiFi.localIP());
     #else
-    log_i("Webserver ready at %s, %s", WiFi.softAPSSID().c_str(), WiFi.softAPIP().toString().c_str());
+    log_i("Webserver ready at %s, %s, %s", WiFi.softAPSSID().c_str(), WiFi.softAPIP().toString().c_str(), apPassword);
     Display.showConfigServerScreen(
         WiFi.softAPSSID(),
         apPassword,
@@ -492,7 +489,8 @@ void ConfigurationClass::startConfigServer()
         WiFi.isConnected() ? WiFi.SSID() : String()
     );
     #endif
-
+    log_i("Starting webserver");
+    _httpServer->begin();
     std::function<void(void)> request;
 
     while (isOnUsbPower() && !shutdown) {
@@ -680,12 +678,12 @@ bool ConfigurationClass::isConfigured()
         getWifiSsid().isEmpty() ||
         getTimezoneName().isEmpty() ||
         getPrimaryNtpServer().isEmpty() ||
-        getPrimaryTimezonedServer().isEmpty() ||
-        (getWeatherEnabled() && (
-            getOwmApiKey().isEmpty() ||
-            getWeatherLocationLatitude() == 0.0 ||
-            getWeatherLocationLongitude() == 0.0
-        ))
+        getPrimaryTimezonedServer().isEmpty() || false
+        // (getWeatherEnabled() && (
+        //     getOwmApiKey().isEmpty() ||
+        //     getWeatherLocationLatitude() == 0.0 ||
+        //     getWeatherLocationLongitude() == 0.0
+        // ))
     );
 }
 
